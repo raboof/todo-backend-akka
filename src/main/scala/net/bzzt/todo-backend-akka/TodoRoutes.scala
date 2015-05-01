@@ -10,7 +10,7 @@ import akka.http.scaladsl.server.Directives._
 trait TodoRoutes {
   def routes = {
     respondWithHeaders(
-      `Access-Control-Allow-Origin`("*"),
+      `Access-Control-Allow-Origin`.`*`,
       `Access-Control-Allow-Headers`("Accept", "Content-Type"),
       `Access-Control-Allow-Methods`(GET, HEAD, POST, DELETE, OPTIONS, PUT, PATCH)
     ) {
