@@ -1,5 +1,7 @@
 name := "todo-backend-akka"
 
+packageArchetype.java_application
+
 scalaVersion := "2.11.6"
 
 libraryDependencies ++= Seq(
