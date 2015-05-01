@@ -16,6 +16,9 @@ trait TodoRoutes {
     ) {
       get {
         complete(StatusCodes.OK)
+      } ~
+      options {
+        complete(StatusCodes.OK)
       }
     }
   }
