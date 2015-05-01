@@ -15,7 +15,7 @@ object Main extends App
   val port = Properties.envOrElse("PORT", "8080").toInt
   implicit val system = ActorSystem()
   implicit val executor = system.dispatcher
-  implicit val materializer = ActorFlowMaterializer()
+  implicit val mat = ActorFlowMaterializer()
 
   Http(system).bindAndHandle(routes, "0.0.0.0", port = port)
 
