@@ -17,6 +17,6 @@ object Main extends App
   implicit val executor = system.dispatcher
   implicit val materializer = ActorFlowMaterializer()
 
-  Http(system).bindAndHandle(routes, "localhost", port = port)
+  Http(system).bindAndHandle(routes, "0.0.0.0", port = port)
 
 }
