@@ -28,6 +28,11 @@ trait TodoRoutes extends TodoMarshalling
       `Access-Control-Allow-Headers`("Accept", "Content-Type"),
       `Access-Control-Allow-Methods`(GET, HEAD, POST, DELETE, OPTIONS, PUT, PATCH)
     ) {
+      get {
+        onSuccess(todoStorage ? TodoStorageActor.Get) { todos =>
+          complete(StatusCodes.OK, todos.asInstanceOf[Seq[Todo]])
+        }
+      } ~
       post {
         entity(as[Todo]) { todo =>
           onSuccess(todoStorage ? TodoStorageActor.Add(todo)) { _ =>
@@ -35,9 +40,9 @@ trait TodoRoutes extends TodoMarshalling
           }
         }
       } ~
-      get {
-        onSuccess(todoStorage ? TodoStorageActor.Get) { todos =>
-          complete(StatusCodes.OK, todos.asInstanceOf[Seq[Todo]])
+      delete {
+        onSuccess(todoStorage ? TodoStorageActor.Clear) { _ =>
+          complete(StatusCodes.OK)
         }
       } ~
       options {
