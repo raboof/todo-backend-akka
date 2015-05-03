@@ -1,5 +1,6 @@
 package net.bzzt.todo.backend.akka
 
+import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import akka.http.scaladsl.model._
@@ -12,8 +13,14 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.unmarshalling._
 import akka.http.scaladsl.marshalling._
 
-trait TodoRoutes
-    extends TodoMarshalling {
+import akka.actor._
+import akka.pattern._
+import akka.util._
+
+trait TodoRoutes extends TodoMarshalling
+    with TodoStorageProvider {
+
+  implicit val timeout: Timeout = 2 seconds
 
   def routes = {
     respondWithHeaders(
@@ -23,11 +30,15 @@ trait TodoRoutes
     ) {
       post {
         entity(as[Todo]) { todo =>
-          complete(StatusCodes.OK, todo)
+          onSuccess(todoStorage ? TodoStorageActor.Add(todo)) { _ =>
+            complete(StatusCodes.OK, todo)
+          }
         }
       } ~
       get {
-        complete(StatusCodes.OK)
+        onSuccess(todoStorage ? TodoStorageActor.Get) { todos =>
+          complete(StatusCodes.OK, todos.asInstanceOf[Seq[Todo]])
+        }
       } ~
       options {
         complete(StatusCodes.OK)

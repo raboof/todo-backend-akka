@@ -11,6 +11,7 @@ import akka.stream.scaladsl._
 import akka.http.scaladsl.Http
 
 object Main extends App
+    with TodoStorage
     with TodoRoutes {
   val port = Properties.envOrElse("PORT", "8080").toInt
   implicit val system = ActorSystem()
