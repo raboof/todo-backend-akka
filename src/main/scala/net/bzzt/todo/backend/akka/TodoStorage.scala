@@ -11,7 +11,7 @@ trait TodoStorage {
 object TodoStorageActor {
   sealed trait Command
   case object Get extends Command
-  case class Add(todo: Todo) extends Command
+  case class Add(todo: TodoUpdate) extends Command
   case object Clear extends Command
 }
 class TodoStorageActor extends Actor {
@@ -22,9 +22,10 @@ class TodoStorageActor extends Actor {
   def receive = {
     case Get =>
       sender() ! todos
-    case Add(todo) =>
-      todos = todos :+ todo
-      sender() ! Status.Success()
+    case Add(todoUpdate) =>
+      val todo = todoUpdate.title.map(Todo(_, todoUpdate))
+      todos = todos ++ todo
+      todo.map(sender() ! _)
     case Clear =>
       todos = List()
       sender() ! Status.Success()

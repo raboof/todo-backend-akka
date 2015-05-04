@@ -34,9 +34,9 @@ trait TodoRoutes extends TodoMarshalling
         }
       } ~
       post {
-        entity(as[Todo]) { todo =>
-          onSuccess(todoStorage ? TodoStorageActor.Add(todo)) { _ =>
-            complete(StatusCodes.OK, todo)
+        entity(as[TodoUpdate]) { update =>
+          onSuccess(todoStorage ? TodoStorageActor.Add(update)) { todo =>
+            complete(StatusCodes.OK, todo.asInstanceOf[Todo])
           }
         }
       } ~

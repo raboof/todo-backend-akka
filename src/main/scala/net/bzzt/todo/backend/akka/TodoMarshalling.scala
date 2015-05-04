@@ -8,13 +8,17 @@ trait TodoMarshalling extends SprayJsonSupport
     with FlowMaterializerProvider
     with DefaultJsonProtocol {
 
-  val defaultTodoFormat = jsonFormat2(Todo.apply)
+  val standardTodoFormat = jsonFormat3(Todo.apply)
 
   implicit object todoFormat extends RootJsonFormat[Todo] {
-    def read(json: JsValue): Todo = {
-      val fields = json.asJsObject.fields
-      defaultTodoFormat.read(JsObject(fields.updated("completed", fields.get("completed").getOrElse(JsBoolean(false)))))
+    def read(json: JsValue) = standardTodoFormat.read(json)
+    def write(todo: Todo) = {
+      val fields = standardTodoFormat.write(todo).asJsObject.fields
+      JsObject(fields.updated("url", JsString(todo.uri)))
     }
-    def write(todo: Todo): JsValue = defaultTodoFormat.write(todo)
   }
+
+
+  implicit val todoUpdateFormat = jsonFormat2(TodoUpdate.apply)
+
 }
