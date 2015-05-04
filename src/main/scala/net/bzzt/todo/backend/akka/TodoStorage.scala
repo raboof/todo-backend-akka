@@ -11,23 +11,26 @@ trait TodoStorage {
 object TodoStorageActor {
   sealed trait Command
   case object Get extends Command
+  case class Get(id: String) extends Command
   case class Add(todo: TodoUpdate) extends Command
   case object Clear extends Command
 }
 class TodoStorageActor extends Actor {
   import TodoStorageActor._
 
-  var todos: Seq[Todo] = List()
+  var todos: Map[String, Todo] = Map()
 
   def receive = {
     case Get =>
-      sender() ! todos
+      sender() ! todos.values
+    case Get(id) =>
+      sender() ! todos.get(id).getOrElse(Status.Failure(new IllegalStateException("ID not found")))
     case Add(todoUpdate) =>
       val todo = todoUpdate.title.map(Todo(_, todoUpdate))
-      todos = todos ++ todo
-      todo.map(sender() ! _)
+      todos = todos ++ todo.map(todo => todo.id.toString -> todo)
+      sender() ! todo.getOrElse(Status.Failure(new IllegalArgumentException("Insufficient data")))
     case Clear =>
-      todos = List()
+      todos = Map()
       sender() ! Status.Success()
   }
 }

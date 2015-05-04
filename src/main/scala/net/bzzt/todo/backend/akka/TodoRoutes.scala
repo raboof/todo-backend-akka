@@ -18,7 +18,7 @@ import akka.pattern._
 import akka.util._
 
 trait TodoRoutes extends TodoMarshalling
-    with TodoStorageProvider {
+  with TodoStorageProvider {
 
   implicit val timeout: Timeout = 2 seconds
 
@@ -28,26 +28,43 @@ trait TodoRoutes extends TodoMarshalling
       `Access-Control-Allow-Headers`("Accept", "Content-Type"),
       `Access-Control-Allow-Methods`(GET, HEAD, POST, DELETE, OPTIONS, PUT, PATCH)
     ) {
-      get {
-        onSuccess(todoStorage ? TodoStorageActor.Get) { todos =>
-          complete(StatusCodes.OK, todos.asInstanceOf[Seq[Todo]])
-        }
-      } ~
-      post {
-        entity(as[TodoUpdate]) { update =>
-          onSuccess(todoStorage ? TodoStorageActor.Add(update)) { todo =>
-            complete(StatusCodes.OK, todo.asInstanceOf[Todo])
+        pathPrefix("todos") {
+          pathEnd {
+            get {
+              onSuccess(todoStorage ? TodoStorageActor.Get) { todos =>
+                complete(StatusCodes.OK, todos.asInstanceOf[Iterable[Todo]])
+              }
+            } ~
+            post {
+              entity(as[TodoUpdate]) { update =>
+                onSuccess(todoStorage ? TodoStorageActor.Add(update)) { todo =>
+                  complete(StatusCodes.OK, todo.asInstanceOf[Todo])
+                }
+              }
+            } ~
+            delete {
+              onSuccess(todoStorage ? TodoStorageActor.Clear) { _ =>
+                complete(StatusCodes.OK)
+              }
+            }
+          } ~ {
+            path(Segment) { id =>
+              get {
+                onSuccess(todoStorage ? TodoStorageActor.Get(id)) { todo =>
+                  complete(StatusCodes.OK, todo.asInstanceOf[Todo])
+                }
+              }
+            }
           }
-        }
-      } ~
-      delete {
-        onSuccess(todoStorage ? TodoStorageActor.Clear) { _ =>
+        } ~
+        path("") {
+          get {
+            complete(StatusCodes.OK)
+          }
+        } ~
+        options {
           complete(StatusCodes.OK)
         }
-      } ~
-      options {
-        complete(StatusCodes.OK)
       }
-    }
   }
 }
