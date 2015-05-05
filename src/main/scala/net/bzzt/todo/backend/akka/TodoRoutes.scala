@@ -53,6 +53,13 @@ trait TodoRoutes extends TodoMarshalling
                 onSuccess(todoStorage ? TodoStorageActor.Get(id)) { todo =>
                   complete(StatusCodes.OK, todo.asInstanceOf[Todo])
                 }
+              } ~
+              patch {
+                entity(as[TodoUpdate]) { update =>
+                  onSuccess(todoStorage ? TodoStorageActor.Update(id, update)) { todo =>
+                    complete(StatusCodes.OK, todo.asInstanceOf[Todo])
+                  }
+                }
               }
             }
           }

@@ -2,7 +2,7 @@ package net.bzzt.todo.backend.akka
 
 import scala.util.Random
 
-case class Todo(id: Int = Random.nextInt(Integer.MAX_VALUE), title: String, completed: Boolean) {
+case class Todo(id: String = Random.nextInt(Integer.MAX_VALUE).toString, title: String, completed: Boolean) {
   def uri = s"https://todo-backend-akka.herokuapp.com/todos/$id"
 }
 case object Todo {
