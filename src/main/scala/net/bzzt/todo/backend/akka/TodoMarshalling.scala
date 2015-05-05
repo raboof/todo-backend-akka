@@ -18,7 +18,5 @@ trait TodoMarshalling extends SprayJsonSupport
     }
   }
 
-
   implicit val todoUpdateFormat = jsonFormat2(TodoUpdate.apply)
-
 }
