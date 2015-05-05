@@ -1,3 +1,3 @@
 package net.bzzt.todo.backend.akka
 
-case class TodoUpdate(title: Option[String], completed: Option[Boolean])
+case class TodoUpdate(title: Option[String], completed: Option[Boolean], order: Option[Int])

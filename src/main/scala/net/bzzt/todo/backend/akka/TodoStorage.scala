@@ -33,8 +33,8 @@ class TodoStorageActor extends Actor {
       val todo = todoUpdate.title.map(Todo(_, todoUpdate))
       todos = todos ++ todo.map(todo => todo.id.toString -> todo)
       sender() ! todo.getOrElse(Status.Failure(new IllegalArgumentException("Insufficient data")))
-    case Update(id, todoUpdate) =>
-      todos = todos.mapValue(id, old => Todo(id, todoUpdate.title.getOrElse(old.title), todoUpdate.completed.getOrElse(old.completed)))
+    case Update(id, update) =>
+      todos = todos.mapValue(id, old => Todo(old, update))
       self.forward(Get(id))
     case Delete(id) =>
       todos = todos.filter(_._1 != id)
