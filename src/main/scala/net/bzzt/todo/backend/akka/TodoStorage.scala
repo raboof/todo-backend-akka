@@ -16,6 +16,7 @@ object TodoStorageActor {
   case class Get(id: String) extends Command
   case class Add(todo: TodoUpdate) extends Command
   case class Update(id: String, todo: TodoUpdate) extends Command
+  case class Delete(id: String) extends Command
   case object Clear extends Command
 }
 class TodoStorageActor extends Actor {
@@ -35,6 +36,9 @@ class TodoStorageActor extends Actor {
     case Update(id, todoUpdate) =>
       todos = todos.mapValue(id, old => Todo(id, todoUpdate.title.getOrElse(old.title), todoUpdate.completed.getOrElse(old.completed)))
       self.forward(Get(id))
+    case Delete(id) =>
+      todos = todos.filter(_._1 != id)
+      sender() ! Status.Success()
     case Clear =>
       todos = Map()
       sender() ! Status.Success()

@@ -60,6 +60,11 @@ trait TodoRoutes extends TodoMarshalling
                     complete(StatusCodes.OK, todo.asInstanceOf[Todo])
                   }
                 }
+              } ~
+              delete {
+                onSuccess(todoStorage ? TodoStorageActor.Delete(id)) { _ =>
+                  complete(StatusCodes.OK)
+                }
               }
             }
           }
