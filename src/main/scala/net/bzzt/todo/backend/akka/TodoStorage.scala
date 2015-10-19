@@ -7,7 +7,7 @@ import MapUtils._
 trait TodoStorage {
   implicit val system: ActorSystem
 
-  lazy val todoStorage: ActorRef = system.actorOf(Props(new TodoStorageActor)) 
+  lazy val todoStorage: ActorRef = system.actorOf(Props(new TodoStorageActor))
 }
 
 object TodoStorageActor {
