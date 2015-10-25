@@ -10,5 +10,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" % "akka-http-testkit-experimental_2.11" % "1.0" % "test",
   "com.typesafe.akka" % "akka-persistence_2.11" % "2.4.0",
   "org.iq80.leveldb" % "leveldb" % "0.7",
-  "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
+  "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test",
+  "com.scalapenos" % "stamina-core_2.11" % "0.1.0",
+  "com.scalapenos" % "stamina-json_2.11" % "0.1.0"
 )

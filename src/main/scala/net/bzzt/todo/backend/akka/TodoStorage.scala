@@ -20,7 +20,7 @@ object TodoStorageActor {
   case class Delete(id: String) extends Command
   case object Clear extends Command
 
-  sealed trait Event
+  sealed trait Event extends stamina.Persistable
   case class Added(todo: Todo) extends Event
   case class Updated(id: String, update: TodoUpdate) extends Event
   case class Deleted(id: String) extends Event
