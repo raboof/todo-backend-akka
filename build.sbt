@@ -13,7 +13,8 @@ libraryDependencies ++= Seq(
   "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test",
   "com.scalapenos" % "stamina-core_2.11" % "0.1.0",
   "com.scalapenos" % "stamina-json_2.11" % "0.1.0",
-  "com.scalapenos" % "stamina-testkit_2.11" % "0.1.0"
+  "com.scalapenos" % "stamina-testkit_2.11" % "0.1.0",
+  "com.github.fommil" %% "spray-json-shapeless" % "1.1.0"
 )
 
 Revolver.settings

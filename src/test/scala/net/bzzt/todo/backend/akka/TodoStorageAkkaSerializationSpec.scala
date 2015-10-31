@@ -15,7 +15,9 @@ class TodoStorageAkkaSerializationSpec extends Suite
       val id = "42"
       persisters.generateTestsFor(
         sample(TodoStorageActor.Added(Todo(id, "foo"))),
-        sample(TodoStorageActor.Updated(id, TodoUpdate(completed = Some(true))))
+        sample(TodoStorageActor.Updated(id, TodoUpdate(completed = Some(true)))),
+        sample(TodoStorageActor.Deleted(id)),
+        sample(TodoStorageActor.Cleared)
       )
     }
 }
