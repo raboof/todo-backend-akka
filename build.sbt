@@ -15,3 +15,5 @@ libraryDependencies ++= Seq(
   "com.scalapenos" % "stamina-json_2.11" % "0.1.0",
   "com.scalapenos" % "stamina-testkit_2.11" % "0.1.0"
 )
+
+Revolver.settings
