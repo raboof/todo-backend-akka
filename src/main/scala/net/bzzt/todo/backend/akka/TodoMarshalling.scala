@@ -10,11 +10,11 @@ trait TodoMarshalling extends SprayJsonSupport
 
   val standardTodoFormat = jsonFormat4(Todo.apply)
 
-  implicit object todoFormat extends RootJsonFormat[Todo] {
+  def todoFormatFor(baseUrl: String) = new RootJsonFormat[Todo] {
     def read(json: JsValue) = standardTodoFormat.read(json)
     def write(todo: Todo) = {
       val fields = standardTodoFormat.write(todo).asJsObject.fields
-      JsObject(fields.updated("url", JsString(todo.uri)))
+      JsObject(fields.updated("url", JsString(baseUrl + '/' + todo.id)))
     }
   }
 

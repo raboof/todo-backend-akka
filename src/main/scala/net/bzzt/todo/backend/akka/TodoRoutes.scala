@@ -23,11 +23,12 @@ trait TodoRoutes extends TodoMarshalling
   implicit val timeout: Timeout = 2 seconds
 
   def routes = {
-    respondWithHeaders(
+    (respondWithHeaders(
       `Access-Control-Allow-Origin`.`*`,
       `Access-Control-Allow-Headers`("Accept", "Content-Type"),
       `Access-Control-Allow-Methods`(GET, HEAD, POST, DELETE, OPTIONS, PUT, PATCH)
-    ) {
+    ) & extract(_.request.getUri())) { uri =>
+      implicit val todoFormat = todoFormatFor(uri.path("/todos").toString)
         pathPrefix("todos") {
           pathEnd {
             get {
