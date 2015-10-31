@@ -10,8 +10,9 @@ import org.scalatest._
 
 class TodoStorageActorTest extends TestKit(
   ActorSystem("TodoStorageActorTest",
-      ConfigFactory.parseString("""akka.persistence.journal.leveldb.dir=/tmp/journal
-        akka.persistence.snapshot-store.leveldb.dir=/tmp/snapshots""").withFallback(ConfigFactory.load)))
+      ConfigFactory.parseString("""akka.persistence.journal.leveldb.dir=target/TodoStorageActorTestJournal
+        akka.persistence.snapshot-store.leveldb.dir=target/TodoStorageActorTestSnapshots
+        """).withFallback(ConfigFactory.load)))
     with WordSpecLike
     with BeforeAndAfterAll
     with ImplicitSender {
