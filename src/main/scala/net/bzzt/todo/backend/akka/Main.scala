@@ -19,5 +19,6 @@ object Main extends App
   implicit val materializer = ActorMaterializer()
 
   Http(system).bindAndHandle(routes, "0.0.0.0", port = port)
+    .foreach(binding => system.log.info("Bound to " + binding.localAddress))
 
 }
