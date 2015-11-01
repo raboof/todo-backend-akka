@@ -21,6 +21,8 @@ class TodoStorageActorTest extends TestKit(
     "keep state across actor restarts" in {
       val initialActor = system.actorOf(Props(new TodoStorageActor))
       initialActor ! TodoStorageActor.Add(TodoUpdate(Some("Todo One"), completed = Some(false), order = Some(1)))
+      val todo = expectMsgType[Todo]
+      initialActor ! TodoStorageActor.Update(todo.id, TodoUpdate(completed = Some(true)))
       expectMsgType[Todo]
 
       initialActor ! TodoStorageActor.Get

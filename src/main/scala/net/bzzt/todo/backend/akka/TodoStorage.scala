@@ -26,7 +26,9 @@ object TodoStorageActor {
   case class Deleted(id: String) extends Event
   case object Cleared extends Event
 }
-class TodoStorageActor extends PersistentActor {
+class TodoStorageActor extends PersistentActor
+    with ActorLogging
+    {
   import TodoStorageActor._
 
   override val persistenceId = "todos"

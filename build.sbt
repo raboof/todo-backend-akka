@@ -16,7 +16,8 @@ libraryDependencies ++= Seq(
   "com.scalapenos" % "stamina-core_2.11" % "0.1.1-SNAPSHOT",
   "com.scalapenos" % "stamina-json_2.11" % "0.1.1-SNAPSHOT",
   "com.scalapenos" % "stamina-testkit_2.11" % "0.1.1-SNAPSHOT",
-  "com.github.fommil" %% "spray-json-shapeless" % "1.1.0"
+  "com.github.fommil" %% "spray-json-shapeless" % "1.1.0",
+  "ch.qos.logback" % "logback-classic" % "1.1.3"
 )
 
 Revolver.settings
