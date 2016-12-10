@@ -38,9 +38,9 @@ class TodoStorageActor extends Actor {
       self.forward(Get(id))
     case Delete(id) =>
       todos = todos.filter(_._1 != id)
-      sender() ! Status.Success()
+      sender() ! Status.Success(())
     case Clear =>
       todos = Map()
-      sender() ! Status.Success()
+      sender() ! Status.Success(())
   }
 }
