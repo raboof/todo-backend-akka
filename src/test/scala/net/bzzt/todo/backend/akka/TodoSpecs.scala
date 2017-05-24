@@ -13,7 +13,7 @@ class TodoSpecs extends Suite
     with ScalatestRouteTest
     with RouteTest
     with WordSpecLike
-    with ShouldMatchers
+    with Matchers
     with TodoRoutes
     with TodoStorage {
 
